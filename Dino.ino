@@ -1,7 +1,5 @@
 // Ausführen mit ./upload.bat
 
-// TODO: Änimäschions
-
 #include "aelements.h"
 #include <EEPROM.h>
 #include <LiquidCrystal_I2C.h>
@@ -38,6 +36,7 @@ bool left = false;
 bool up = false;
 bool push = false;
 
+bool immediatePush = false;
 // time after character
 // is selected until game starts (miliseconds)
 #define TIME_BEFORE_GAME_START 2000
@@ -95,7 +94,7 @@ void loop() {
     handleInput();
     charSelScreen();
   } else if (curScreen == GAME_SCREEN) {
-    if (score % 20 == 0) {
+    if (score % 10 == 0) {
       gameDelay -= 2;
     }
     createGeneralElements();
@@ -112,7 +111,7 @@ void loop() {
     drawCacti();
     drawPlayer();
     drawScore();
-    lcd.setCursor(14, 0);
+    lcd.setCursor(15, 0);
     lcd.print("H:");
     lcd.print(highscore);
     // Delay so the game is playable
@@ -264,8 +263,6 @@ void handleJump() {
   }
 }
 
-void press() {}
-
 void cleanup_array(Cactus *arr, uint8_t arr_len, uint8_t offset) {
   for (uint8_t i = offset; i < arr_len; i++) {
     arr[i - offset] = arr[i];
@@ -274,6 +271,7 @@ void cleanup_array(Cactus *arr, uint8_t arr_len, uint8_t offset) {
 
 void handleCollision() {
   if (cacti_amount != 0 && cacti[0].x == 3 && !jumping) {
+    lcd.clear();
     curScreen = END_SCREEN;
   }
 }
@@ -300,22 +298,22 @@ void startscreen() {
     lcd.print("|");
   }
   delay(255);
-  clearLineStart(2);
+  clearLineStart(3);
   if (push || left || right || up || down) {
     highscore = EEPROM.read(HIGH_SCORE_ADDR);
     curScreen = CHAR_SEL_SCREEN;
-    lcd.clear();
   }
 }
 
 void endscreen() {
-  lcd.clear();
   lcd.setCursor(5, 1);
   lcd.print("Game Over");
+  lcd.setCursor(4, 2);
+  lcd.print("          ");
   lcd.setCursor(8, 2);
   lcd.print(score);
-  lcd.setCursor(6, 3);
-  lcd.print("Restart");
+  lcd.setCursor(5, 3);
+  lcd.print(" Restart ");
   lcd.setCursor(9, 0);
   lcd.write(byte(0));
   if (score > highscore) {
@@ -354,6 +352,7 @@ string_t names[] = {"Geist", "Mate", "Anselm", "Big Man"};
 uint8_t selCharacter = 3;
 
 void charSelScreen() {
+  clearLineStart(1);
   // Print CharName
   lcd.setCursor(7, 0);
   lcd.print(names[selCharacter]);
@@ -411,8 +410,16 @@ void charSelScreen() {
     lcd.clear();
     lcd.setCursor(6, 1);
     lcd.print("Selected");
-    lcd.setCursor(10, 2);
+    lcd.setCursor(9, 2);
     lcd.write(byte(selCharacter));
+  for (uint8_t x = 0; x < 4; x++) {
+    lcd.setCursor(0, x);
+    lcd.print("|");
+  }
+  for (uint8_t x = 0; x < 4; x++) {
+    lcd.setCursor(19, x);
+    lcd.print("|");
+  }
     selectedPlayerSkin = selCharacter;
     lcd.setCursor(7, 0);
     lcd.print(names[selCharacter]);
