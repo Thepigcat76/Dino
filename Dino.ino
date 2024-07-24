@@ -90,14 +90,14 @@ void loop() {
     handleInput();
     startscreen();
   } else if (curScreen == CHAR_SEL_SCREEN) {
-    createGeneralElements();
+    createCharSelElements();
     handleInput();
     charSelScreen();
   } else if (curScreen == GAME_SCREEN) {
     if (score % 10 == 0) {
       gameDelay -= 2;
     }
-    createGeneralElements();
+    createGameElements();
     // Handle stuff
     handleInput();
     handleJump();
@@ -124,13 +124,21 @@ void loop() {
   resetHighscore();
 }
 
-void createGeneralElements() {
+void createCharSelElements() {
   // Erstellen der Custom Chars
   lcd.createChar(0, geist);
   lcd.createChar(1, mate);
   lcd.createChar(2, anselm);
   lcd.createChar(3, bigman);
   lcd.createChar(4, arrow);
+}
+
+void createGameElements() {
+  // Erstellen der Custom Chars
+  lcd.createChar(0, geist);
+  lcd.createChar(1, mate);
+  lcd.createChar(2, anselm);
+  lcd.createChar(3, bigman);
 
   lcd.createChar(5, boden);
   lcd.createChar(6, grossKak);
