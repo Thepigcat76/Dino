@@ -346,7 +346,7 @@ void resetAll() {
 // CHARACTERSELECTION
 typedef char *string_t;
 
-string_t names[] = {"Geist", "Mate", "Anselm", "Big Man"};
+string_t names[] = {"Geist", "Mate ", "Anselm", "Big Man"};
 
 uint8_t selCharacter = 3;
 
