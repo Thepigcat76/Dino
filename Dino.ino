@@ -36,7 +36,6 @@ bool left = false;
 bool up = false;
 bool push = false;
 
-bool immediatePush = false;
 // time after character
 // is selected until game starts (miliseconds)
 #define TIME_BEFORE_GAME_START 2000
