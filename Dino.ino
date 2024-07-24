@@ -36,6 +36,7 @@ bool left = false;
 bool up = false;
 bool push = false;
 
+bool immediatePush = false;
 // time after character
 // is selected until game starts (miliseconds)
 #define TIME_BEFORE_GAME_START 2000
@@ -148,7 +149,7 @@ void createStartElements() {
   lcd.createChar(7, O_Bot);
 }
 
-void createEndElements() { lcd.createChar(0, skull); }
+void createEndElements() { lcd.createChar(4, skull); }
 
 void listenForJoystickInput() {
   if (up && !jumping && velocity <= 0) {
@@ -314,7 +315,7 @@ void endscreen() {
   lcd.setCursor(5, 3);
   lcd.print(" Restart ");
   lcd.setCursor(9, 0);
-  lcd.write(byte(0));
+  lcd.write(byte(4));
   if (score > highscore) {
     highscore = score;
   }
